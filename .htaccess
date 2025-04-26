@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Asegura que mod_rewrite esté habilitado
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige todo a index.php y pasa la ruta como parámetro
+RewriteRule ^(.+)$ index.php?page=$1 [QSA,L]
