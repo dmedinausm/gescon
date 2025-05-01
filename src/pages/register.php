@@ -7,10 +7,10 @@
 <h1>Página de Registro</h1>
 <p>Bienvenido, por favor registra tu usuario.</p>
 
-<a href="main">Ir a Main</a>
+<!-- <a href="main">Ir a Main</a> -->
 
 
-<form action="register.php" method="post"><br>
+<form action="register" method="post"><br>
   
   <input type="text" name="rut" placeholder="RUT" required><br>
   <input type="text" name="name" placeholder="Nombre" required><br>

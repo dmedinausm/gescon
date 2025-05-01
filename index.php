@@ -8,9 +8,6 @@ switch($page) {
   case 'register':
     include 'src/pages/register.php';
     break;
-    case 'register.php':
-      include 'src/pages/register.php';
-      break;
   case 'main':
     include 'src/pages/main.php';
     break;
