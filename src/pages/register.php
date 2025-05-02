@@ -7,10 +7,10 @@
 <h1>Página de Registro</h1>
 <p>Bienvenido, por favor registra tu usuario.</p>
 
-<!-- <a href="main">Ir a Main</a> -->
+<!-- <a href="?page=main">Ir a Main</a> -->
 
 
-<form action="register" method="post"><br>
+<form action="?page=register" method="post"><br>
   
   <input type="text" name="rut" placeholder="RUT" required><br>
   <input type="text" name="name" placeholder="Nombre" required><br>
@@ -24,7 +24,7 @@
   <button type="submit">Ingresar</button>
 </form><br>
 
-<p>¿Ya tienes cuenta? <a href="login">Inicia sesión aquí</a></p>
+<p>¿Ya tienes cuenta? <a href="?page=login">Inicia sesión aquí</a></p>
 </body>
 </html>
 
@@ -35,19 +35,33 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // ATTR_ERRMODE es una constante que representa la opción de manejo de errores
 // ERRMODE_EXCEPTION si algo sale mal, lanza un exception. 
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $rut = $_POST['rut'];
-    $nombre = $_POST['name'];
-    $email = $_POST['email'];
+    $rut = trim($_POST['rut']);
+    $nombre = trim($_POST['name']);
+    $email = trim($_POST['email']);
     $user_type = $_POST['tipo_usuario'];
     $password = $_POST['password'];
     
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
     
-    $stmt = $pdo->prepare("INSERT INTO usuario (RUT_usuario, nombre, email, tipo_usuario, password_hash) VALUES (?,?,?,?,?)");
-    $stmt->execute([$rut,$nombre,$email,$user_type,$password_hash]);
+    // $stmt = $pdo->prepare("INSERT INTO usuario (RUT_usuario, nombre, email, tipo_usuario, password_hash) VALUES (?,?,?,?,?)");
+    // $stmt->execute([$rut,$nombre,$email,$user_type,$password_hash]);
     
     echo "Usuario registrado correctamente.";
+    try {
+
+        $stmt = $pdo->prepare("INSERT INTO usuario (RUT_usuario, nombre, email, tipo_usuario, password_hash) VALUES (?,?,?,?,?)");
+        $stmt->execute([$rut,$nombre,$email,$user_type,$password_hash]);
+        
+        echo "Usuario registrado correctamente.";
+    } catch (PDOExeption $e) {
+        if($e->getCode() === '23000') {
+            echo "El RUT o correo ya están registrados";
+        } else {
+            echo "Error al registrar: ". $e->getMessage();
+        }
+    }
 }
 ?>
 

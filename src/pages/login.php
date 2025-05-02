@@ -1,15 +1,15 @@
 <h1>Página de Login</h1>
 <p>Bienvenido, por favor inicia sesión.</p>
-<!-- <a href="main">Ir a Main</a> -->
+<!-- <a href="?page=main">Ir a Main</a> -->
 
 
-<form action="login" method="post"> <br>
+<form action="?page=login" method="post"> <br>
   <input type="text" name="rut" placeholder="RUT" required><br>
   <input type="email" name="email" placeholder="Email" required><br>
   <input type="password" name="password" placeholder="Contraseña" required><br>
   <button type="submit">Ingresar</button>
 </form>
-<p>¿No tienes cuenta? <a href="register">Regístrate aquí</a></p>
+<p>¿No tienes cuenta? <a href="?page=register">Regístrate aquí</a></p>
 
 <?php
 
@@ -28,12 +28,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $stmt->execute ([$rut]);
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
     
+    if (!$usuario) {
+        echo "Usuario no encontrado.";
+        exit;
+    }
+
     if($usuario && password_verify($password, $usuario['password_hash'])){
         //inicio de sesión correcto. 
         $_SESION['usuario'] = $usuario['RUT_usuario'];
-        header("Location: main");
+        // $_SESSION['nombre'] = $usuario['nombre'];
+        header("Location: ?page=main");
         exit;
-    } else {
+    } 
+    else {
         echo "Rut, email o contraseña incorrectos. ";
     }
 }
