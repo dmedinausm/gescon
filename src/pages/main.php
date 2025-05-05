@@ -9,7 +9,7 @@
 
 // $nombre = $_SESSION['nombre']; -->
 
-<h2> Bienvenido, 
+<h2> Bienvenido, a SeS
     
     <!DOCTYPE html>
     <html lang="es">
