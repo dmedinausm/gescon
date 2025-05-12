@@ -35,8 +35,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     if($usuario && password_verify($password, $usuario['password_hash'])){
         //inicio de sesión correcto. 
-        $_SESION['usuario'] = $usuario['RUT_usuario'];
-        // $_SESSION['nombre'] = $usuario['nombre'];
+        $_SESSION['usuario'] = $usuario['RUT_usuario'];
+        $_SESSION['nombre'] = $usuario['nombre'];
+        $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
         header("Location: ?page=main");
         exit;
     } 

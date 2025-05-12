@@ -17,10 +17,10 @@
   <input type="email" name="email" placeholder="Email" required><br>
   <input type="password" name="password" placeholder="Contraseña" required><br>
   <!-- <input type="select" name="user_type" option="1" required> -->
-  <select name="tipo_usuario" required>
+  <!-- <select name="tipo_usuario" required>
     <option value="A" selected>Autor</option> 
     <option value="R">Revisor</option>
-    </select>
+    </select> -->
   <button type="submit">Ingresar</button>
 </form><br>
 
@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $rut = trim($_POST['rut']);
     $nombre = trim($_POST['name']);
     $email = trim($_POST['email']);
-    $user_type = $_POST['tipo_usuario'];
+    $user_type = 'A';
     $password = $_POST['password'];
     
     $password_hash = password_hash($password, PASSWORD_DEFAULT);

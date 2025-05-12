@@ -1,26 +1,42 @@
-<!-- 
-// session_start();
+<?php 
+session_start();
 
-//si el usuario inición sesion?
-// if(!isset($_SESSION['usuario'])) {
-//     header("Location: login.php");
-//     exit;
-// }
+if(!isset($_SESSION['usuario'])) {
+    header("Location: ?page=login");
+    exit();
+}
+include 'lib.php'
 
-// $nombre = $_SESSION['nombre']; -->
 
-<h2> Bienvenido, a SeS
+
+
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>MAIN</title>
+    </head>
+    <body>
+        <h1>GESCON</h1>
+        <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?> 👋</h2>
+        <p>Tu rol es:  <?php echo $tipo_usuario ?>. </p>
+        <p>Has iniciado sesión correctamente.</p>
+        <a href="?page=login">Ir al login</a>
     
-    <!DOCTYPE html>
-    <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <title>Panel de Usuario</title>
-        </head>
-        <body>
-            <h1>Página Principal</h1>
-            <!-- <h2>Bienvenido, <?php echo htmlspecialchars($nombre); ?> 👋</h2> -->
-            <p>Has iniciado sesión correctamente.</p>
-            <a href="?page=login">Ir al login</a>
-        </body>
+                
+        <ul>
+        <li><a href="perfil.php">Perfil</a></li>
+
+        <?php if ($_SESSION['tipo_usuario'] === 'J'): ?>
+        <li><a href="?page=gestion_revisores">Comité de Revisores</a></li>
+        <li><a href="?page=asignar_articulos">Asignar Articulos</a></li>
+
+        <?php endif; ?>
+        </ul>
+            
+    </body>
 </html>
