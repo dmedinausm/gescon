@@ -21,7 +21,7 @@ switch($page) {
     include 'src/pages/acceso_denegado.php';
     break;
   case 'perfil':
-    include 'src/pages/perfil.php';
+    include 'src/pages/perfil/perfil.php';
     break;
   default:
     echo "<h1>404 - Página no encontrada</h1>";

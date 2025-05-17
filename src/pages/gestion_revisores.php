@@ -107,9 +107,45 @@ if (isset($_GET['editar'])) {
     <?php endforeach; ?>
 
     <input type="submit" name="guardar" value="Guardar">
+
 </form>
 
+
+<h2>Lista de Autores</h2>
+<table border="1">
+    <tr>
+        <th>RUT</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Tópicos</th>
+        <th>Acciones</th>
+    </tr>
+    <?php
+    $res = $conn->query("SELECT * FROM usuario WHERE tipo_usuario = 'A'");
+    while ($row = $res->fetch_assoc()):
+        $rut = $row['RUT_usuario'];
+        $topicos = $conn->query("SELECT t.nombre_topico FROM revisor_topico rt
+                                     JOIN topico t ON rt.ID_topico = t.ID_topico
+                                     WHERE rt.RUT_revisor = '$rut'");
+        $nombresTopicos = array_column($topicos->fetch_all(MYSQLI_ASSOC), 'nombre_topico');
+    ?>
+        <tr>
+            <td><?= $rut ?></td>
+            <td><?= $row['nombre'] ?></td>
+            <td><?= $row['email'] ?></td>
+            <td><?= implode(", ", $nombresTopicos) ?></td>
+            <td>
+                <a href="revisores.php?editar=<?= $rut ?>">Editar</a> |
+                <a href="revisores.php?eliminar=<?= $rut ?>" onclick="return confirm('¿Eliminar revisor?')">Eliminar</a>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+</table>
+
+
 <hr>
+
+
 
 <h2>Lista de Revisores</h2>
 <table border="1">
