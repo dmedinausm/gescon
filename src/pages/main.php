@@ -3,6 +3,8 @@ session_start();
 
 if(!isset($_SESSION['usuario'])) {
     header("Location: ?page=login");
+    header("Location: ?page=post_article");
+    header("Location: ?page=view_article");
     exit();
 }
 include 'lib.php'
@@ -26,6 +28,7 @@ include 'lib.php'
         <p>Tu rol es:  <?php echo $tipo_usuario ?>. </p>
         <p>Has iniciado sesión correctamente.</p>
         <a href="?page=login">Ir al login</a>
+        <a href="?page=view_article">Ir a articulos</a>
     
                 
         <ul>

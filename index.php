@@ -11,6 +11,15 @@ switch($page) {
   case 'main':
     include 'src/pages/main.php';
     break;
+  case 'view_article':
+    include 'src/pages/view_article.php';
+    break;      
+  case 'post_article':
+    include 'src/pages/post_article.php';
+    break;  
+  case 'edit_article':
+    include 'src/pages/edit_article.php';
+    break;    
   case 'gestion_revisores':
     include 'src/pages/gestion_revisores.php';
     break;
