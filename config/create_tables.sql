@@ -69,3 +69,12 @@ CREATE TABLE revision_articulo (
     CONSTRAINT fk_articulo FOREIGN KEY (ID_articulo) REFERENCES articulo (ID_articulo),
     CONSTRAINT fk_revision FOREIGN KEY (ID_revision) REFERENCES evaluacion (ID_revision)
 ); 
+
+-- Tabla de Articulo_Topico
+CREATE TABLE articulo_topico (
+    ID_articulo INT NOT NULL,
+    ID_topico INT NOT NULL,
+    PRIMARY KEY (ID_articulo, ID_topico),
+    CONSTRAINT fk_articulo_topico_articulo FOREIGN KEY (ID_articulo) REFERENCES articulo (ID_articulo),
+    CONSTRAINT fk_articulo_topico_topico FOREIGN KEY (ID_topico) REFERENCES topico (ID_topico)
+);
