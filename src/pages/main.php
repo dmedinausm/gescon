@@ -9,12 +9,7 @@ if(!isset($_SESSION['usuario'])) {
 }
 include 'lib.php'
 
-
-
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="es">

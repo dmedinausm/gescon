@@ -87,6 +87,8 @@ if ($tipo_usuario === 'R') {
     <title>Perfil de Usuario</title>
 </head>
 <body>
+     <h1>GESCON</h1>
+        <a href="?page=main">Ir al Menu</a>
     <h2>Perfil de <?php echo htmlspecialchars($_SESSION['nombre']); ?></h2>
 
     <?php if (isset($success)) echo "<p style='color:green;'>$success</p>"; ?>

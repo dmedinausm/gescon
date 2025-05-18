@@ -2,7 +2,7 @@
 session_start();
 
 include 'config\db.php';
-include 'lib.php';
+include 'src\pages\lib.php';
 // Verifica si el usuario está logueado y tiene el rol adecuado
 
 if (!isset($_SESSION['usuario']) || $_SESSION['tipo_usuario'] !== 'J') {
@@ -63,7 +63,6 @@ if (isset($_GET['editar'])) {
         $topicosSeleccionados[] = $row['ID_topico'];
     }
 }
-?>
 ?>
 
 

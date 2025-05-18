@@ -13,10 +13,11 @@
 
 <?php
 
+require_once 'config\db.php';
 session_start();
 
-$pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
+// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // obtener datos del formulario
 if($_SERVER["REQUEST_METHOD"] == "POST"){
