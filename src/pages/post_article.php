@@ -11,21 +11,21 @@
     <input type="text" name="titulo" placeholder="Título del artículo" required><br>
     <textarea name="resumen" placeholder="Resumen del artículo" required></textarea><br>
     
-    <label for="topico">Seleccione un tópico:</label>
-    <select name="topico" required>
-        <?php
-        $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
-        $stmt = $pdo->query("SELECT ID_topico, nombre_topico FROM topico");
-        while ($row = $stmt->fetch()) {
-            echo "<option value='{$row['ID_topico']}'>{$row['nombre_topico']}</option>";
-        }
-        ?>
-    </select><br><br>
+    <label>Seleccione uno o más tópicos:</label><br>
+    <?php
+    $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
+    $stmt = $pdo->query("SELECT ID_topico, nombre_topico FROM topico");
+    while ($row = $stmt->fetch()) {
+        echo "<label><input type='checkbox' name='topicos[]' value='{$row['ID_topico']}'> {$row['nombre_topico']}</label><br>";
+    }
+    ?>
+    <br>
 
-    <p>Ingrese hasta 3 RUTs de autores (el primero será el autor de contacto):</p>
-    <input type="text" name="autor_ruts[]" placeholder="RUT Autor 1" required><br>
-    <input type="text" name="autor_ruts[]" placeholder="RUT Autor 2 (opcional)"><br>
-    <input type="text" name="autor_ruts[]" placeholder="RUT Autor 3 (opcional)"><br><br>
+    <p>Ingrese hasta 3 autores (el primero será el autor de contacto):</p>
+    <?php for ($i = 0; $i < 3; $i++): ?>
+    <input type="text" name="autor_nombres[]" placeholder="Nombre del autor <?= $i + 1 ?>" <?= $i == 0 ? 'required' : '' ?>><br>
+    <input type="email" name="autor_emails[]" placeholder="Email del autor <?= $i + 1 ?>" <?= $i == 0 ? 'required' : '' ?>><br><br>
+    <?php endfor; ?>
 
     <button type="submit">Subir artículo</button>
 
@@ -40,8 +40,31 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titulo = trim($_POST['titulo']);
     $resumen = trim($_POST['resumen']);
-    $topico_id = $_POST['topico'];
-    $autor_ruts = array_filter($_POST['autor_ruts']); // Remove empty RUTs
+    $topico_ids = isset($_POST['topicos']) ? $_POST['topicos'] : [];
+    if (empty($topico_ids)) {
+        throw new Exception("Debe seleccionar al menos un tópico.");
+    }
+    $autor_nombres = $_POST['autor_nombres'];
+    $autor_emails = $_POST['autor_emails'];
+    $autor_ruts = [];
+
+    for ($i = 0; $i < count($autor_nombres); $i++) {
+        $nombre = trim($autor_nombres[$i]);
+        $email = trim($autor_emails[$i]);
+
+        if ($nombre && $email) {
+            // Find RUT based on name and email
+            $stmt = $pdo->prepare("SELECT RUT_usuario FROM usuario WHERE nombre = ? AND email = ?");
+            $stmt->execute([$nombre, $email]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row) {
+                $autor_ruts[] = $row['RUT_usuario'];
+            } else {
+                throw new Exception("Autor no encontrado: $nombre <$email>");
+            }
+        }
+    }
 
     try {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -54,7 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insert into articulo_topico
         $stmt = $pdo->prepare("INSERT INTO articulo_topico (ID_articulo, ID_topico) VALUES (?, ?)");
-        $stmt->execute([$articulo_id, $topico_id]);
+        foreach ($topico_ids as $topico_id) {
+            $stmt->execute([$articulo_id, $topico_id]);
+        }
 
         // Insert into articulo_autor
         $stmt = $pdo->prepare("INSERT INTO articulo_autor (ID_articulo, RUT_autor, is_contact) VALUES (?, ?, ?)");
@@ -72,4 +97,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
+<p><a href="?page=view_article">Volver a la lista de artículos</a></p>

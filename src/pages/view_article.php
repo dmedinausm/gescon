@@ -13,6 +13,13 @@
     </label>
     <button type="submit">Filtrar</button>
 </form>
+<form method="get" action="">
+    <input type="hidden" name="page" value="view_article">
+    <input type="text" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+    <button type="submit">Buscar</button>
+</form>
+<p><a href="?page=post_article">Subir otro artículo</a></p>
+<p><a href="?page=main">Volver</a></p>
 
 <?php
 session_start();
@@ -36,14 +43,34 @@ try {
         $stmt->execute([$_SESSION['usuario']]);
     } 
     else {
-        $stmt = $pdo->query("
-            SELECT a.ID_articulo, a.titulo, a.fecha_envio, a.resumen, t.nombre_topico
+        $search = $_GET['q'] ?? '';
+        $params = [];
+    
+        $sql = "
+            SELECT DISTINCT a.ID_articulo, a.titulo, a.fecha_envio, a.resumen, t.nombre_topico
             FROM articulo a
             JOIN articulo_topico at ON a.ID_articulo = at.ID_articulo
             JOIN topico t ON at.ID_topico = t.ID_topico
-            ORDER BY a.fecha_envio DESC
-        ");
+            LEFT JOIN articulo_autor aa ON a.ID_articulo = aa.ID_articulo
+            LEFT JOIN usuario u ON aa.RUT_autor = u.RUT_usuario
+        ";
+    
+        if (!empty($search)) {
+            $sql .= " WHERE 
+                a.titulo LIKE :q OR 
+                a.resumen LIKE :q OR 
+                t.nombre_topico LIKE :q OR 
+                u.nombre LIKE :q
+            ";
+            $params['q'] = '%' . $search . '%';
+        }
+    
+        $sql .= " ORDER BY a.fecha_envio DESC";
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
     }    
+    
     
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -56,7 +83,18 @@ try {
             echo "<div style='border:1px solid #ccc; padding:10px; margin:10px 0;'>";
             echo "<h2>{$article['titulo']}</h2>";
             echo "<p><strong>Fecha de envío:</strong> {$article['fecha_envio']}</p>";
-            echo "<p><strong>Tópico:</strong> {$article['nombre_topico']}</p>";
+            // Get all topics for this article
+            $stmt_topics = $pdo->prepare("
+            SELECT t.nombre_topico
+            FROM articulo_topico at
+            JOIN topico t ON at.ID_topico = t.ID_topico
+            WHERE at.ID_articulo = ?
+            ");
+            $stmt_topics->execute([$article['ID_articulo']]);
+            $topics = $stmt_topics->fetchAll(PDO::FETCH_COLUMN);
+
+            echo "<p><strong>Tópicos:</strong> " . implode(", ", $topics) . "</p>";
+
             echo "<p><strong>Resumen:</strong> {$article['resumen']}</p>";
 
             // Get authors
@@ -97,8 +135,6 @@ try {
     echo "<p>Error al obtener los artículos: " . $e->getMessage() . "</p>";
 }
 ?>
-
-<p><a href="?page=post_article">Subir otro artículo</a></p>
 
 </body>
 </html>
