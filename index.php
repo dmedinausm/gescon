@@ -27,6 +27,9 @@ switch($page) {
   case 'edit_article':
     include 'src/pages/edit_article.php';
     break;    
+  case 'add_review':
+    include 'src/pages/add_review.php';
+    break;     
   //REVISORES
   case 'gestion_revisores':
     include 'src/pages/gestion_revisores/gestion_revisores.php';

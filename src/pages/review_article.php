@@ -21,7 +21,9 @@ try {
     echo "Session RUT: " . $_SESSION['usuario'];
 
     // Get all articles
-
+    if ($_SESSION['tipo_usuario'] != 'R') {
+        die("Acceso denegado. Solo los revisores pueden editar este artículo.");
+    }
     $stmt = $pdo->prepare("
         SELECT a.ID_articulo, a.titulo, a.fecha_envio, a.resumen, t.nombre_topico
         FROM articulo a
@@ -76,16 +78,10 @@ try {
             }
             echo "</ul></p>";
 
-            $isReviewer = false;
-            foreach ($authors as $author) {
-                if (isset($_SESSION['usuario']) && $_SESSION['usuario'] === $author['RUT_autor']) {
-                    $isReviewer = true;
-                    break;
-                }
-            }
-            if ($isReviewer) {
-                echo "<p><a href='?page=add_review&id={$article['ID_articulo']}'>A revisar mierda</a></p>";
-            }
+
+
+            echo "<p><a href='?page=add_review&id={$article['ID_articulo']}'>A revisar</a></p>";
+
             
 
             echo "</div>";
