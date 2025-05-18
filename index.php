@@ -13,7 +13,10 @@ switch($page) {
     break;
   case 'view_article':
     include 'src/pages/view_article.php';
-    break;      
+    break;   
+  case 'adv_search':
+    include 'src/pages/adv_search.php';
+    break;   
   case 'post_article':
     include 'src/pages/post_article.php';
     break;  

@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->beginTransaction();
 
             $pdo->prepare("DELETE FROM articulo_autor WHERE ID_articulo = ?")->execute([$article_id]);
-            $pdo->prepare("DELETE FROM articulo_topico WHERE ID_articulo = ?")->execute([$article_id]);
+            $stmt = $pdo->prepare("DELETE FROM articulo_topico WHERE ID_articulo = ?");
+            $stmt->execute([$article_id]);
             $pdo->prepare("DELETE FROM articulo WHERE ID_articulo = ?")->execute([$article_id]);
 
             $pdo->commit();
@@ -40,7 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update article
         $titulo = trim($_POST['titulo']);
         $resumen = trim($_POST['resumen']);
-        $topico_id = $_POST['topico'];
+        if (empty($_POST['topicos'])) {
+            echo "<p style='color:red;'>Debes seleccionar al menos un tópico.</p>";
+            return;
+        }
+        $topico_ids = isset($_POST['topicos']) ? $_POST['topicos'] : [];
         $new_ruts = array_filter($_POST['autor_ruts']);
 
         try {
@@ -49,8 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->prepare("UPDATE articulo SET titulo = ?, resumen = ? WHERE ID_articulo = ?")
                 ->execute([$titulo, $resumen, $article_id]);
 
-            $pdo->prepare("UPDATE articulo_topico SET ID_topico = ? WHERE ID_articulo = ?")
-                ->execute([$topico_id, $article_id]);
+            $pdo->prepare("DELETE FROM articulo_topico WHERE ID_articulo = ?")->execute([$article_id]);    
+            $stmt = $pdo->prepare("INSERT INTO articulo_topico (ID_articulo, ID_topico) VALUES (?, ?)");
+            foreach ($topico_ids as $topico_id) {
+                $stmt->execute([$article_id, $topico_id]);
+            }
 
             // Replace authors
             $pdo->prepare("DELETE FROM articulo_autor WHERE ID_articulo = ?")->execute([$article_id]);
@@ -101,14 +109,23 @@ $current_authors = $stmt->fetchAll(PDO::FETCH_COLUMN);
     <input type="text" name="titulo" value="<?= htmlspecialchars($article['titulo']) ?>" required><br>
     <textarea name="resumen" required><?= htmlspecialchars($article['resumen']) ?></textarea><br>
 
-    <label>Tópico:</label>
-    <select name="topico">
-        <?php foreach ($topics as $topic): ?>
-            <option value="<?= $topic['ID_topico'] ?>" <?= $topic['ID_topico'] == $article['ID_topico'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($topic['nombre_topico']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select><br><br>
+    <label>Seleccione uno o más tópicos:</label><br>
+    <?php
+    // Get all available topics
+    $stmt = $pdo->query("SELECT ID_topico, nombre_topico FROM topico");
+    $all_topics = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get topics currently assigned to this article
+    $stmt = $pdo->prepare("SELECT ID_topico FROM articulo_topico WHERE ID_articulo = ?");
+    $stmt->execute([$article_id]);
+    $current_topic_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($all_topics as $topic) {
+        $checked = in_array($topic['ID_topico'], $current_topic_ids) ? 'checked' : '';
+        echo "<label><input type='checkbox' name='topicos[]' value='{$topic['ID_topico']}' $checked> {$topic['nombre_topico']}</label><br>";
+    }
+    ?>
+    <br>
 
     <p>Autores (máx 3, el primero es el contacto):</p>
     <?php for ($i = 0; $i < 3; $i++): ?>

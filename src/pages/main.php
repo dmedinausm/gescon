@@ -29,6 +29,7 @@ include 'lib.php'
         <p>Has iniciado sesión correctamente.</p>
         <a href="?page=login">Ir al login</a>
         <a href="?page=view_article">Ir a articulos</a>
+        <a href="?page=adv_search">Ir a advsearch</a>
     
                 
         <ul>
