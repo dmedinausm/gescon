@@ -22,6 +22,7 @@ $result = $conn->query($sql);
         <th>Email</th>
         <th>Tópicos</th>
         <th>Acciones</th>
+        <th>Detalle</th>
     </tr>
     <?php while ($row = $result->fetch_assoc()): ?>
     <tr>
@@ -33,6 +34,8 @@ $result = $conn->query($sql);
             <a href="?page=editar_revisores&rut=<?= $row['RUT_usuario'] ?>">Editar</a> |
             <a href="?page=eliminar_revisores&rut=<?= $row['RUT_usuario'] ?>" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
         </td>
+        <td><a href="?page=detalle_revisor&id=<?= $row['RUT_usuario'] ?>">Ver Detalle</a>
+</td>
     </tr>
     <?php endwhile; ?>
 </table>

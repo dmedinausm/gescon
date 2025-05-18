@@ -11,6 +11,7 @@ switch($page) {
   case 'main':
     include 'src/pages/main.php';
     break;
+  //ARTICULOS
   case 'view_article':
     include 'src/pages/view_article.php';
     break;      
@@ -20,6 +21,7 @@ switch($page) {
   case 'edit_article':
     include 'src/pages/edit_article.php';
     break;    
+  //REVISORES
   case 'gestion_revisores':
     include 'src/pages/gestion_revisores/gestion_revisores.php';
     break;
@@ -35,9 +37,30 @@ switch($page) {
   case 'eliminar_revisores':
     include 'src/pages/gestion_revisores/eliminar_revisores.php';
     break;
-  case 'asignar_articulos':
-    include 'src/pages/asignar_articulos.php';
+  //ASIGNAR REVISORES A ARTICULOS
+  case 'asignar_artic_rev':
+    include 'src/pages/asignar/asignar_artic_rev.php';
     break;
+  case 'procesar_asignar_revisor':
+    include 'src/pages/asignar/procesar_asignar_revisor.php';
+    break;
+  case 'quitar_revisor':
+    include 'src/pages/asignar/quitar_revisor.php';
+    break;
+  case 'asignar_revisor':
+    include 'src/pages/asignar/asignar_revisor.php';
+    break;
+  //ASIGNAR ARTICULOS A REVISORES
+  case 'detalle_revisor':
+    include 'src/pages/asignar/revisor/detalle_revisor.php';
+    break;
+  case 'asignar_articulo_revisor':
+    include 'src/pages/asignar/revisor/asignar_articulo_revisor.php';
+    break;
+  case 'quitar_articulo_revisor':
+    include 'src/pages/asignar/revisor/quitar_articulo_revisor.php';
+    break;
+  //OTROS
   case 'acceso_denegado':
     include 'src/pages/acceso_denegado.php';
     break;

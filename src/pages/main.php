@@ -34,7 +34,7 @@ include 'lib.php'
 
         <?php if ($_SESSION['tipo_usuario'] === 'J'): ?>
         <li><a href="?page=gestion_revisores">Comité de Revisores</a></li>
-        <li><a href="?page=asignar_articulos">Asignar Articulos</a></li>
+        <li><a href="?page=asignar_artic_rev">Asignar Articulos</a></li>
 
         <?php endif; ?>
         </ul>
