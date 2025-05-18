@@ -87,8 +87,19 @@ try {
             }
             if ($isAuthor) {
                 echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
-            }
             
+                // Check if there are any reviews for this article
+                $stmt = $pdo->prepare("
+                    SELECT COUNT(*) FROM revision_articulo
+                    WHERE ID_articulo = ?
+                ");
+                $stmt->execute([$article['ID_articulo']]);
+                $reviewCount = $stmt->fetchColumn();
+            
+                if ($reviewCount > 0) {
+                    echo "<p><a href='?page=review_list&id={$article['ID_articulo']}'>Ver revisiones del artículo</a></p>";
+                }
+            }            
 
             echo "</div>";
             
