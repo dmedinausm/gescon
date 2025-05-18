@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Artículos Subidos</title>
+    <title>Articulos a revisar</title>
 </head>
 <body>
-<h1>Tus artículos</h1>
+<h1>Tu pega</h1>
 
 <form method="get" action="">
-    <input type="hidden" name="page" value="view_article">
+    <input type="hidden" name="page" value="review_article">
     <input type="text" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
     <button type="submit">Buscar</button>
 </form>
-<p><a href="?page=post_article">Subir otro artículo</a></p>
 <p><a href="?page=main">Volver</a></p>
 
 <?php
@@ -29,17 +28,16 @@ try {
         JOIN articulo_topico at ON a.ID_articulo = at.ID_articulo
         JOIN topico t ON at.ID_topico = t.ID_topico
         JOIN articulo_autor aa ON a.ID_articulo = aa.ID_articulo
-        WHERE aa.RUT_autor = ?
+        JOIN articulo_revisor ar ON a.ID_articulo = ar.ID_articulo
+        WHERE ar.RUT_revisor = ?
         ORDER BY a.fecha_envio DESC
     ");
     $stmt->execute([$_SESSION['usuario']]);
-
-    
-    
+ 
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if (count($articles) === 0) {
-        echo "<p>No hay artículos registrados.</p>";
+        echo "<p>No hay artículos para revisar.</p>";
     }  
   
     else {
@@ -78,15 +76,15 @@ try {
             }
             echo "</ul></p>";
 
-            $isAuthor = false;
+            $isReviewer = false;
             foreach ($authors as $author) {
                 if (isset($_SESSION['usuario']) && $_SESSION['usuario'] === $author['RUT_autor']) {
-                    $isAuthor = true;
+                    $isReviewer = true;
                     break;
                 }
             }
-            if ($isAuthor) {
-                echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
+            if ($isReviewer) {
+                echo "<p><a href='?page=add_review&id={$article['ID_articulo']}'>A revisar mierda</a></p>";
             }
             
 

@@ -15,6 +15,9 @@ switch($page) {
   case 'view_article':
     include 'src/pages/view_article.php';
     break;   
+  case 'review_article':
+    include 'src/pages/review_article.php';
+    break;    
   case 'adv_search':
     include 'src/pages/adv_search.php';
     break;   

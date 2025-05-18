@@ -5,7 +5,6 @@
 </head>
 <body>
 <h1>Lista de Artículos Subidos</h1>
-<p><a href="?page=main">Volver</a></p>
 <form method="get" action="">
     <input type="hidden" name="page" value="adv_search">
     <input type="text" name="search" placeholder="Buscar (título)" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
@@ -31,7 +30,7 @@
     ?>
     <br>
     <button type="submit">Buscar</button>
-
+    <p><a href="?page=main">Volver</a></p>
     
 </form>
 
@@ -40,7 +39,6 @@ session_start();
 try {   
     $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Session RUT: " . $_SESSION['usuario'];
 
     // Get all articles
     $search = $_GET['search'] ?? '';
@@ -108,7 +106,7 @@ try {
     //JOIN usuario ur ON ar.RUT_revisor = u.RUT_usuario
     
     // pa testear
-    echo "<pre>$sql</pre>";
+    //echo "<pre>$sql</pre>";
     //print_r($params);
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
