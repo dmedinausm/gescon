@@ -63,8 +63,12 @@ $articulos = $conn->query($sql);
                         $nombre_revisor = $r['nombre'];
                         $revisores[] = "$nombre_revisor <a class='quitar' href='?page=quitar_revisor&id=$id&rut=$rut_revisor' onclick='return confirm(\"¿Quitar revisor?\")'>[Quitar]</a>";
                     }
+
+                    // Contar revisores usando la función
+                    $revisorCountRes = $conn->query("SELECT contar_revisores($id) AS cantidad");
+                    $revisorCount = $revisorCountRes->fetch_assoc()['cantidad'];
                     ?>
-                    <tr>
+                    <tr class="<?= $revisorCount < 2 ? 'pocos-revisores' : '' ?>">
                         <td><?= $id ?></td>
                         <td><?= $art['titulo'] ?></td>
                         <td><?= implode(', ', $autores) ?></td>

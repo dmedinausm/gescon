@@ -25,6 +25,9 @@ if (!$usuario || !password_verify($password, $usuario['password'])) {
 
 // Actualizar datos
 $update = $pdo->prepare("UPDATE usuarios SET nombre = ?, email = ?, tipo_usuario = ? WHERE RUT_usuario = ?");
+$pdo->prepare("UPDATE mensaje_revisor SET mostrar_mensaje = 0 WHERE RUT_usuario = ?")->execute([$RUT_usuario]);
+
+
 $update->execute([$nombre, $email, $tipo_usuario, $RUT_usuario]);
 
 echo "Perfil actualizado correctamente. <a href='perfil.php'>Volver</a>";
