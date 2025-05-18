@@ -28,6 +28,9 @@
     <?php endfor; ?>
 
     <button type="submit">Subir artículo</button>
+
+    <br>
+    <a href="?page=main">Ir al menu</a>
 </form>
 
 </body>
@@ -93,6 +96,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Error al registrar el artículo: " . $e->getMessage() . "</p>";
     }
 }
-// INSERT INTO topico (nombre_topico) VALUES ('Ingeniería'), ('Ciencia'), ('Salud'), ('Comedia'), ('Seguridad'), ('Celebridades'), ('Deportes');
 ?>
 <p><a href="?page=view_article">Volver a la lista de artículos</a></p>

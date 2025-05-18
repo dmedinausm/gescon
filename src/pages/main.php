@@ -9,12 +9,7 @@ if(!isset($_SESSION['usuario'])) {
 }
 include 'lib.php'
 
-
-
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -32,8 +27,11 @@ include 'lib.php'
         <a href="?page=adv_search">Ir a advsearch</a>
     
                 
+        <?php if($_SESSION['tipo_usuario'] === 'R') 
+            echo "Eres nuevo revisor!, ingresa a tu perfil para agregar tu especialidad."
+        ?>
         <ul>
-        <li><a href="perfil.php">Perfil</a></li>
+        <li><a href="?page=perfil">Perfil</a></li>
 
         <?php if ($_SESSION['tipo_usuario'] === 'J'): ?>
         <li><a href="?page=gestion_revisores">Comité de Revisores</a></li>
