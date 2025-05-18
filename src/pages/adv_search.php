@@ -5,6 +5,7 @@
 </head>
 <body>
 <h1>Lista de Artículos Subidos</h1>
+<p><a href="?page=main">Volver</a></p>
 <form method="get" action="">
     <input type="hidden" name="page" value="adv_search">
     <input type="text" name="search" placeholder="Buscar (título)" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">

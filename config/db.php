@@ -10,7 +10,7 @@ $conn = new mysqli($host, $user, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 } else {
-    echo "conectado";
+    //echo "conectado";
     // $pdo = new PDO($dsn, $user, $pass, $options);
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);

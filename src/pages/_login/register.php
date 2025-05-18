@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Registro</title>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="src/styles/style.css"> <!-- Ajusta la ruta si es necesario -->
+    <link rel="stylesheet" href="src/styles/login/register.css"> <!-- Ajusta la ruta si es necesario -->
+
 </head>
 <body>
-<h1>Página de Registro</h1>
-<p>Bienvenido, por favor registra tu usuario.</p>
 
+    <div class="form-container">
+        <h1>Página de Registro</h1>
+        <p>Bienvenido, por favor registra tu usuario.</p>
 
-<form action="?page=register" method="post"><br>
-  
-  <input type="text" name="rut" placeholder="RUT" required><br>
-  <input type="text" name="name" placeholder="Nombre" required><br>
-  <input type="email" name="email" placeholder="Email" required><br>
-  <input type="password" name="password" placeholder="Contraseña" required><br>
-  <button type="submit">Ingresar</button>
-</form><br>
+        <form action="?page=register" method="post">
+            <input type="text" name="rut" placeholder="RUT" required>
+            <input type="text" name="name" placeholder="Nombre" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit">Registrarse</button>
+        </form>
 
-<p>¿Ya tienes cuenta? <a href="?page=login">Inicia sesión aquí</a></p>
+        <p class="link-text">¿Ya tienes cuenta? <a href="?page=login">Inicia sesión aquí</a></p>
+    </div>
+
 </body>
 </html>
 
 <?php
 
 require_once 'config\db.php';
-
-// $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
-// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-// ATTR_ERRMODE es una constante que representa la opción de manejo de errores
-// ERRMODE_EXCEPTION si algo sale mal, lanza un exception. 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $rut = trim($_POST['rut']);

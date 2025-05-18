@@ -41,23 +41,41 @@ if (count($topico_ids) > 0) {
 
 
 
-<h3>Asignar Revisor al Artículo #<?= $id_articulo ?></h3>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Asignar Revisor</title>
+    <link rel="stylesheet" href="src/styles/asignar/asignar.css">
+</head>
+<body>
 
-<?php if (!empty($topico_ids)): ?>
-    <form method="post" action="index.php?page=procesar_asignar_revisor">
-        <input type="hidden" name="id_articulo" value="<?= $id_articulo ?>">
-        <select name="rut_revisor" required>
-            <?php while ($rev = $revisores->fetch_assoc()): ?>
-                <option value="<?= $rev['RUT_usuario'] ?>">
-                    <?= $rev['nombre'] ?> (<?= $rev['RUT_usuario'] ?>)
-                </option>
-            <?php endwhile; ?>
-        </select>
-        <button type="submit">Asignar</button>
-    </form>
-<?php else: ?>
-    <p><strong>Este artículo no tiene tópicos asociados. Asóciale al menos un tópico para poder asignar revisores.</strong></p>
-<?php endif; ?>
+    <div class="container">
+        <h3>Asignar Revisor al Artículo #<?= $id_articulo ?></h3>
 
+        <?php if (!empty($topico_ids)): ?>
+            <form method="post" action="index.php?page=procesar_asignar_revisor" class="assign-form">
+                <input type="hidden" name="id_articulo" value="<?= $id_articulo ?>">
+                
+                <label for="rut_revisor">Selecciona un revisor:</label>
+                <select name="rut_revisor" id="rut_revisor" required>
+                    <?php while ($rev = $revisores->fetch_assoc()): ?>
+                        <option value="<?= $rev['RUT_usuario'] ?>">
+                            <?= $rev['nombre'] ?> (<?= $rev['RUT_usuario'] ?>)
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                
+                <button type="submit">Asignar</button>
+            </form>
+        <?php else: ?>
+            <div class="warning">
+                <p><strong>Este artículo no tiene tópicos asociados.</strong></p>
+                <p>Asóciale al menos un tópico para poder asignar revisores.</p>
+            </div>
+        <?php endif; ?>
+    </div>
 
+</body>
+</html>
 

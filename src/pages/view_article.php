@@ -5,6 +5,7 @@
 </head>
 <body>
 <h1>Lista de Artículos Subidos</h1>
+<p><a href="?page=main">Volver</a></p>
 <form method="get" action="">
     <input type="hidden" name="page" value="view_article">
     <label>
@@ -19,7 +20,6 @@
     <button type="submit">Buscar</button>
 </form>
 <p><a href="?page=post_article">Subir otro artículo</a></p>
-<p><a href="?page=main">Volver</a></p>
 
 <?php
 session_start();
