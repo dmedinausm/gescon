@@ -76,3 +76,10 @@ input[type="checkbox"] {
 .submit-btn:hover {
     background-color: #003366;
 }
+.alert {
+    background-color: #e0ffe0;
+    color: #006400;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}

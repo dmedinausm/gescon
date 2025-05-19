@@ -145,7 +145,7 @@ if ($rut) {
     </main>
 
     <footer>
-        <p><a href="?page=login">Cerrar sesión</a></p>
+        <p><a href="?page=logout">Cerrar sesión</a></p>
     </footer>
 </body>
 </html>

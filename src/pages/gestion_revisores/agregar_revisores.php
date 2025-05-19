@@ -30,6 +30,9 @@ $autores = $conn->query("SELECT * FROM usuario WHERE tipo_usuario = 'A'");
             <?php endwhile; ?>
         </div>
         <button type="submit" class="submit-btn">Agregar como revisores</button>
+    <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'ok'): ?>
+        <div class="alert"><p>✅ Se le envió un mensaje al correo</p></div>
+    <?php endif; ?>
     </form>
 </div>
 
