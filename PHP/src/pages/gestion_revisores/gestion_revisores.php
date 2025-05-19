@@ -17,7 +17,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Revisores</title>
-    <link rel="stylesheet" href="src/styles/revisores.css">
+    <link rel="stylesheet" href="PHP/src/styles/revisores.css">
 </head>
 <body>
 

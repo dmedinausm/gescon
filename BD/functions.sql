@@ -1,6 +1,6 @@
---un function para que cuente los revisores de un articulo, así marcarlo cuando tiene <2
+-- un function para que cuente los revisores de un articulo, así marcarlo cuando tiene <2
 
-DELIMITER $$
+DROP FUNCTION IF EXISTS contar_revisores;
 
 CREATE FUNCTION contar_revisores(ID INT)
 RETURNS INT
@@ -13,6 +13,4 @@ BEGIN
     WHERE ID_articulo = ID;
 
     RETURN cantidad;
-END$$
-
-DELIMITER ;
+END;

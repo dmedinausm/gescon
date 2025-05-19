@@ -42,8 +42,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Página de Login</title>
-    <link rel="stylesheet" href="src/styles/style.css">
-    <link rel="stylesheet" href="src/styles/login/login.css">
+    <link rel="stylesheet" href="PHP/src/styles/style.css">
+    <link rel="stylesheet" href="PHP/src/styles/login/login.css">
 </head>
 <body>
 

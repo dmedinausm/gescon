@@ -27,7 +27,7 @@ if ($rut) {
 <head>
     <meta charset="UTF-8">
     <title>GESCON - Panel Principal</title>
-    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="PHP/src/styles/main.css">
 </head>
 <body>
     <header>

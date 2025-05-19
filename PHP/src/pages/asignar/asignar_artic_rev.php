@@ -9,7 +9,7 @@ $articulos = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Asignar Revisores</title>
-    <link rel="stylesheet" href="src/styles/asignar/asignar_artic_rev.css">
+    <link rel="stylesheet" href="PHP/src/styles/asignar/asignar_artic_rev.css">
 </head>
 <body>
 

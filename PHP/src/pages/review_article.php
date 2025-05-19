@@ -1,24 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Articulos a revisar</title>
+    <meta charset="UTF-8">
+    <title>Artículos a Revisar</title>
+    <link rel="stylesheet" href="PHP/src/styles/article/review_article.css">
 </head>
 <body>
-<h1>Tu pega</h1>
+    <div class="container">
+        <div class="header">
+            <h2>Artículos a Revisar</h2>
+            <a class="back-button" href="?page=main">Volver</a>
+        </div>
 
-<form method="get" action="">
-    <input type="hidden" name="page" value="review_article">
-    <input type="text" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
-    <button type="submit">Buscar</button>
-</form>
-<p><a href="?page=main">Volver</a></p>
+        <form method="get" action="">
+            <input type="hidden" name="page" value="review_article">
+            <label for="busqueda">Buscar artículos</label>
+            <input type="text" id="busqueda" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+            <input type="submit" value="Buscar">
+        </form>
+          <?php if (empty($articulos)) : ?>
+            <div class="message error">No hay artículos para revisar.</div>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
 
 <?php
 session_start();
 try {   
     $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Session RUT: " . $_SESSION['usuario'];
+
 
     // Get all articles
     if ($_SESSION['tipo_usuario'] != 'R') {
@@ -39,7 +51,7 @@ try {
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if (count($articles) === 0) {
-        echo "<p>No hay artículos para revisar.</p>";
+        // echo "<p>No hay artículos para revisar.</p>";
     }  
   
     else {
@@ -105,5 +117,3 @@ try {
 }
 ?>
 
-</body>
-</html>

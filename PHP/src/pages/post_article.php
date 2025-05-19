@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Subir Artículo</title>
-    <link rel="stylesheet" href="src/styles/article/post_article.css">
+    <link rel="stylesheet" href="PHP/src/styles/article/post_article.css">
 </head>
 <body>
 <div class="container">

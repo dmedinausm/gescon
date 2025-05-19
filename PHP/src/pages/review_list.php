@@ -36,8 +36,6 @@ if (!$article) {
     die("Artículo no encontrado.");
 }
 
-echo "<h1>Reseñas del artículo: " . htmlspecialchars($article['titulo']) . "</h1>";
-
 // Fetch reviews linked to this article
 $stmt = $pdo->prepare("
     SELECT e.ID_revision, e.nombre_revision
@@ -47,18 +45,33 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$article_id]);
 $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-if (!$reviews) {
-    echo "<p>No hay reseñas registradas para este artículo aún.</p>";
-} else {
-    echo "<ul>";
-    foreach ($reviews as $review) {
-        $name = htmlspecialchars($review['nombre_revision']);
-        $link = "?page=view_review&id={$article_id}";
-        echo "<li>$name - <a href='$link'>Ver detalle</a></li>";
-    }
-    echo "</ul>";
-}
-
-echo "<p><a href='?page=view_article'>Volver a la lista de artículos</a></p>";
 ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reseñas del Artículo</title>
+    <link rel="stylesheet" href="PHP/src/styles/article/review_list.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Reseñas del artículo: <?= htmlspecialchars($article['titulo']) ?></h1>
+
+        <?php if (!$reviews): ?>
+            <p>No hay reseñas registradas para este artículo aún.</p>
+        <?php else: ?>
+            <ul>
+                <?php foreach ($reviews as $review): ?>
+                    <li>
+                        <?= htmlspecialchars($review['nombre_revision']) ?>
+                        <a href="?page=view_review&id=<?= $article_id ?>">Ver detalle</a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <a class="back-link" href="?page=view_article">Volver a la lista de artículos</a>
+    </div>
+</body>
+</html>

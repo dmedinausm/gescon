@@ -8,7 +8,7 @@ $autores = $conn->query("SELECT * FROM usuario WHERE tipo_usuario = 'A'");
 <head>
     <meta charset="UTF-8">
     <title>Agregar Revisores</title>
-    <link rel="stylesheet" href="src/styles/revisores/agregar_revisores.css">
+    <link rel="stylesheet" href="PHP/src/styles/revisores/agregar_revisores.css">
 </head>
 <body>
 

@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Artículos Subidos</title>
-    <link rel="stylesheet" href="src/styles/article/adv_search.css">
+    <link rel="stylesheet" href="PHP/src/styles/article/adv_search.css">
 </head>
 <body>
 <div class="container">

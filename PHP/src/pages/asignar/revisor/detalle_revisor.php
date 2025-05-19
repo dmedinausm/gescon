@@ -41,7 +41,7 @@ $articulos_disponibles = $conn->query("
     )
 ");
 ?>
-<link rel="stylesheet" href="src/styles/revisores/detalle.css">
+<link rel="stylesheet" href="PHP/src/styles/revisores/detalle.css">
 
 <div class="container">
     <a href="?page=gestion_revisores" class="back-link">← Volver a miembros del comité</a>

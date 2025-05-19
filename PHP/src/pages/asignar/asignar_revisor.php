@@ -46,7 +46,7 @@ if (count($topico_ids) > 0) {
 <head>
     <meta charset="UTF-8">
     <title>Asignar Revisor</title>
-    <link rel="stylesheet" href="src/styles/asignar/asignar.css">
+    <link rel="stylesheet" href="PHP/src/styles/asignar/asignar.css">
 </head>
 <body>
 

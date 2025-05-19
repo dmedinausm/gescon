@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
-    <link rel="stylesheet" href="src/styles/style.css"> <!-- Ajusta la ruta si es necesario -->
-    <link rel="stylesheet" href="src/styles/login/register.css"> <!-- Ajusta la ruta si es necesario -->
+    <link rel="stylesheet" href="PHP/src/styles/style.css"> <!-- Ajusta la ruta si es necesario -->
+    <link rel="stylesheet" href="PHP/src/styles/login/register.css"> <!-- Ajusta la ruta si es necesario -->
 
 </head>
 <body>

@@ -60,30 +60,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Agregar Evaluación</title>
+        <link rel="stylesheet" href="PHP/src/styles/article/add_review.css">
 </head>
 <body>
-<h1>Evaluar Artículo</h1>
-<form method="post">
-    <label>Nombre de la revisión:</label><br>
-    <input type="text" name="nombre_revision" required><br><br>
+    <div class="container">
+        <div class="header">
+            <h2>Evaluar Artículo</h2>
+            <a href="?page=review_article" class="back-button">Volver a Artículos a revisar</a>
+        </div>
 
-    <label>Calidad Técnica (1-5):</label><br>
-    <input type="number" name="calidad_tecnica" min="1" max="5" required><br><br>
+        <form method="post">
+            <label for="nombre_revision">Nombre de la revisión:</label>
+            <input type="text" name="nombre_revision" id="nombre_revision" required>
 
-    <label>Originalidad (1-5):</label><br>
-    <input type="number" name="originalidad" min="1" max="5" required><br><br>
+            <label for="calidad_tecnica">Calidad Técnica (1-5):</label>
+            <input type="number" name="calidad_tecnica" id="calidad_tecnica" min="1" max="5" required>
 
-    <label>Valoración Global (1-5):</label><br>
-    <input type="number" name="valoracionGlobal" min="1" max="5" required><br><br>
+            <label for="originalidad">Originalidad (1-5):</label>
+            <input type="number" name="originalidad" id="originalidad" min="1" max="5" required>
 
-    <label>Argumentos:</label><br>
-    <textarea name="argumentos" maxlength="300" required></textarea><br><br>
+            <label for="valoracionGlobal">Valoración Global (1-5):</label>
+            <input type="number" name="valoracionGlobal" id="valoracionGlobal" min="1" max="5" required>
 
-    <label>Comentario adicional (opcional):</label><br>
-    <textarea name="comentario" maxlength="300"></textarea><br><br>
+            <label for="argumentos">Argumentos:</label>
+            <textarea name="argumentos" id="argumentos" maxlength="300" rows="4" required></textarea>
 
-    <button type="submit">Enviar Evaluación</button>
-</form>
-<p><a href='?page=view_articles'>Volver a Artículos</a></p>
+            <label for="comentario">Comentario adicional (opcional):</label>
+            <textarea name="comentario" id="comentario" maxlength="300" rows="4"></textarea>
+
+            <button type="submit">Enviar Evaluación</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -78,7 +78,7 @@ if ($tipo_usuario === 'R') {
 <head>
      <meta charset="UTF-8">
     <title>Perfil de Usuario</title>
-    <link rel="stylesheet" href="src/styles/perfil/perfil.css">
+    <link rel="stylesheet" href="PHP/src/styles/perfil/perfil.css">
 </head>
 <body>
 

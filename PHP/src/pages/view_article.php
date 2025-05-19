@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Artículos Subidos</title>
-    <link rel="stylesheet" href="src/styles/article/view_article.css">
+    <link rel="stylesheet" href="PHP/src/styles/article/view_article.css">
 </head>
 
 <body>
