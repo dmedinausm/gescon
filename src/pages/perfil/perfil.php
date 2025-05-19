@@ -49,17 +49,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             }
         }
 
-        $success = "Datos actualizados correctamente (topico y +)";
+        $success = "Datos actualizados correctamente";
     
-
-        // if($stmt->execute()){
-        //     $success = "Datos actualizados correctamente.";
-        //     $_SESSION['nombre'] = $nombre;
-        // }else {
-        //     $error = "Error al actualizar los datos.";
-        // }
     }
-    //Obtener los datos actuales
 }
 
 //obtener los datos del usuario
@@ -84,55 +76,50 @@ if ($tipo_usuario === 'R') {
 <!DOCTYPE html>
 <html>
 <head>
+     <meta charset="UTF-8">
     <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="src/styles/perfil/perfil.css">
 </head>
 <body>
-     <h1>GESCON</h1>
-        <a href="?page=main">Ir al Menu</a>
-    <h2>Perfil de <?php echo htmlspecialchars($_SESSION['nombre']); ?></h2>
 
-    <?php if (isset($success)) echo "<p style='color:green;'>$success</p>"; ?>
-    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+    <div class="container">
+        <div class="header">
+            <h2>Perfil de <?= htmlspecialchars($_SESSION['nombre']); ?></h2>
+            <a class="back-button" href="?page=main">← Volver al Menú</a>
+        </div>
 
-    <form method="post">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required><br>
+        <?php if (isset($success)) echo "<div class='message success'>" . htmlspecialchars($success) . "</div>"; ?>
+        <?php if (isset($error)) echo "<div class='message error'>" . htmlspecialchars($error) . "</div>"; ?>
 
-        <label>Email:</label>
-        <input type="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required><br>
+        <form method="post">
+            <label>Nombre:</label>
+            <input type="text" name="nombre" value="<?= htmlspecialchars($usuario['nombre']); ?>" required>
 
-        <?php if($tipo_usuario === 'R'): ?>
-            <fieldset>
-                <legend>Especialidades (Tópicos)</legend>
-                <?php foreach ($topicos as $topico): ?>
-                    <label>
-                        <input type="checkbox" name="topicos[]" value="<?= $topico['ID_topico'] ?>"
-                            <?= in_array($topico['ID_topico'], $topicos_asignados) ? 'checked' : '' ?>>
-                        <?= htmlspecialchars($topico['nombre_topico']) ?>
-                    </label><br>
-                <?php endforeach; ?>
-            </fieldset>
-        <?php endif; ?>
-        
-        <label>Nueva contraseña:</label>
-        <input type="password" name="nueva_contraseña"><br>
+            <label>Email:</label>
+            <input type="email" name="email" value="<?= htmlspecialchars($usuario['email']); ?>" required>
 
-        <label>Confirmar contraseña:</label>
-        <input type="password" name="confirmar_contraseña"><br>
+            <?php if($tipo_usuario === 'R'): ?>
+                <fieldset>
+                    <legend>Especialidades (Tópicos)</legend>
+                    <?php foreach ($topicos as $topico): ?>
+                        <label>
+                            <input type="checkbox" name="topicos[]" value="<?= $topico['ID_topico'] ?>"
+                                <?= in_array($topico['ID_topico'], $topicos_asignados) ? 'checked' : '' ?>>
+                            <?= htmlspecialchars($topico['nombre_topico']) ?>
+                        </label>
+                    <?php endforeach; ?>
+                </fieldset>
+            <?php endif; ?>
 
-        <input type="submit" value="Actualizar perfil">
-    </form>
+            <label>Nueva contraseña:</label>
+            <input type="password" name="nueva_contraseña">
+
+            <label>Confirmar contraseña:</label>
+            <input type="password" name="confirmar_contraseña">
+
+            <input type="submit" value="Actualizar perfil">
+        </form>
+    </div>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

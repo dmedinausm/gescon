@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f8;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #004080;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    margin-top: 0;
+    color: #004080;
+}
+
+.rut {
+    font-size: 16px;
+    color: #555;
+}
+
+.section {
+    margin-top: 30px;
+}
+
+.assigned-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.assigned-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.remove-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.remove-btn:hover {
+    background-color: #c9302c;
+}
+
+.assign-form {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background-color: #004080;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #003366;
+}
+
+.empty {
+    color: #888;
+    font-style: italic;
+}
