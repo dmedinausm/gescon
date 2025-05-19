@@ -40,16 +40,16 @@ if ($rut) {
                 <li><a href="?page=login">Ir al login</a></li>
                 <li><a href="?page=view_article">Ver artículos</a></li>
                 <li><a href="?page=adv_search">Búsqueda avanzada</a></li>
-                <li><a href="?page=perfil">Perfil</a></li>
-
+                
                 <?php if ($_SESSION['tipo_usuario'] === 'R'): ?>
                     <li><a href="?page=review_article">Área de revisión</a></li>
-                <?php endif; ?>
-
-                <?php if ($_SESSION['tipo_usuario'] === 'J'): ?>
-                    <li><a href="?page=gestion_revisores">Comité de Revisores</a></li>
-                    <li><a href="?page=asignar_artic_rev">Asignar Artículos</a></li>
-                <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <?php if ($_SESSION['tipo_usuario'] === 'J'): ?>
+                        <li><a href="?page=gestion_revisores">Comité de Revisores</a></li>
+                        <li><a href="?page=asignar_artic_rev">Asignar Artículos</a></li>
+                        <?php endif; ?>
+                <li><a href="?page=perfil">Perfil</a></li>
             </ul>
         </nav>
     </header>
