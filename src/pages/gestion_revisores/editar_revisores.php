@@ -21,14 +21,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     header("Location: ?page=gestion_revisores");
 }
 ?>
-<form method="post">
-    <h2>Editar tópicos para <?= $rut ?></h2>
-    <?php while ($topico = $topicos->fetch_assoc()): ?>
-        <label>
-            <input type="checkbox" name="topicos[]" value="<?= $topico['ID_topico'] ?>"
-                <?= in_array($topico['ID_topico'], $asignados) ? 'checked' : '' ?>>
-            <?= $topico['nombre_topico'] ?>
-        </label><br>
-    <?php endwhile; ?>
-    <button type="submit">Guardar</button>
-</form>
+<link rel="stylesheet" href="src/styles/revisores/detalle.css">
+
+<div class="container">
+    <a href="?page=gestion_revisores" class="back-link">← Volver a miembros del comité</a>
+
+    <h2>Editar Tópicos para <span class="rut"><?= htmlspecialchars($rut) ?></span></h2>
+
+    <form method="post" class="assign-form">
+        <div class="checkbox-list">
+            <?php while ($topico = $topicos->fetch_assoc()): ?>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="topicos[]" value="<?= $topico['ID_topico'] ?>"
+                        <?= in_array($topico['ID_topico'], $asignados) ? 'checked' : '' ?>>
+                    <?= htmlspecialchars($topico['nombre_topico']) ?>
+                </label>
+            <?php endwhile; ?>
+        </div>
+        <button type="submit">Guardar</button>
+    </form>
+</div>

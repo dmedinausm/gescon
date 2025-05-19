@@ -1,104 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Artículos Subidos</title>
+    <link rel="stylesheet" href="src/styles/article/view_article.css">
 </head>
+
 <body>
-<h1>Tus artículos</h1>
+    <div class="container">
+        <div class="header">
+            <h2>Tus artículos</h2>
+        </div>
 
-<form method="get" action="">
-    <input type="hidden" name="page" value="view_article">
-    <input type="text" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
-    <button type="submit">Buscar</button>
-</form>
-<p><a href="?page=post_article">Subir otro artículo</a></p>
-<p><a href="?page=main">Volver</a></p>
+        <form method="get" action="">
+            <input type="hidden" name="page" value="view_article">
+            <input type="text" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+            <button type="submit">Buscar</button>
+        </form>
 
-<?php
-session_start();
-try {   
-    $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Session RUT: " . $_SESSION['usuario'];
+        <div class="nav-links">
+            <a href="?page=post_article">Subir otro artículo</a>
+            <a href="?page=main">Volver</a>
+        </div>
 
-    // Get all articles
+        <?php
+        session_start();
+        try {
+            $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->prepare("
-        SELECT a.ID_articulo, a.titulo, a.fecha_envio, a.resumen, t.nombre_topico
-        FROM articulo a
-        JOIN articulo_topico at ON a.ID_articulo = at.ID_articulo
-        JOIN topico t ON at.ID_topico = t.ID_topico
-        JOIN articulo_autor aa ON a.ID_articulo = aa.ID_articulo
-        WHERE aa.RUT_autor = ?
-        ORDER BY a.fecha_envio DESC
-    ");
-    $stmt->execute([$_SESSION['usuario']]);
-
-    
-    
-    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    if (count($articles) === 0) {
-        echo "<p>No hay artículos registrados.</p>";
-    }  
-  
-    else {
-        foreach ($articles as $article) {
-            echo "<div style='border:1px solid #ccc; padding:10px; margin:10px 0;'>";
-            echo "<h2>{$article['titulo']}</h2>";
-            echo "<p><strong>Fecha de envío:</strong> {$article['fecha_envio']}</p>";
-            // Get all topics for this article
-            $stmt_topics = $pdo->prepare("
-            SELECT t.nombre_topico
-            FROM articulo_topico at
-            JOIN topico t ON at.ID_topico = t.ID_topico
-            WHERE at.ID_articulo = ?
+            $stmt = $pdo->prepare("
+                SELECT a.ID_articulo, a.titulo, a.fecha_envio, a.resumen
+                FROM articulo a
+                JOIN articulo_autor aa ON a.ID_articulo = aa.ID_articulo
+                WHERE aa.RUT_autor = ?
+                ORDER BY a.fecha_envio DESC
             ");
-            $stmt_topics->execute([$article['ID_articulo']]);
-            $topics = $stmt_topics->fetchAll(PDO::FETCH_COLUMN);
+            $stmt->execute([$_SESSION['usuario']]);
+            $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            echo "<p><strong>Tópicos:</strong> " . implode(", ", $topics) . "</p>";
+            if (count($articles) === 0) {
+                echo "<p class='no-articles'>No hay artículos registrados.</p>";
+            } else {
+                foreach ($articles as $article) {
+                    echo "<div class='article'>";
+                    echo "<h3>" . htmlspecialchars($article['titulo']) . "</h3>";
+                    echo "<p><strong>Fecha de envío:</strong> " . htmlspecialchars($article['fecha_envio']) . "</p>";
 
-            echo "<p><strong>Resumen:</strong> {$article['resumen']}</p>";
+                    // Tópicos
+                    $stmt_topics = $pdo->prepare("
+                        SELECT t.nombre_topico
+                        FROM articulo_topico at
+                        JOIN topico t ON at.ID_topico = t.ID_topico
+                        WHERE at.ID_articulo = ?
+                    ");
+                    $stmt_topics->execute([$article['ID_articulo']]);
+                    $topics = $stmt_topics->fetchAll(PDO::FETCH_COLUMN);
+                    echo "<p><strong>Tópicos:</strong> " . htmlspecialchars(implode(", ", $topics)) . "</p>";
 
-            // Get authors
-            $stmt2 = $pdo->prepare("
-                SELECT aa.RUT_autor, u.nombre, aa.is_contact
-                FROM articulo_autor aa
-                JOIN usuario u ON aa.RUT_autor = u.RUT_usuario
-                WHERE aa.ID_articulo = ?
-            ");
-            $stmt2->execute([$article['ID_articulo']]);
-            $authors = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                    // Resumen
+                    echo "<p><strong>Resumen:</strong> " . htmlspecialchars($article['resumen']) . "</p>";
 
-            echo "<p><strong>Autores:</strong><ul>";
-            foreach ($authors as $author) {
-                $contactMark = $author['is_contact'] ? " (autor de contacto)" : "";
-                echo "<li>{$author['nombre']} ({$author['RUT_autor']}){$contactMark}</li>";
-            }
-            echo "</ul></p>";
+                    // Autores
+                    $stmt2 = $pdo->prepare("
+                        SELECT aa.RUT_autor, u.nombre, aa.is_contact
+                        FROM articulo_autor aa
+                        JOIN usuario u ON aa.RUT_autor = u.RUT_usuario
+                        WHERE aa.ID_articulo = ?
+                    ");
+                    $stmt2->execute([$article['ID_articulo']]);
+                    $authors = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-            $isAuthor = false;
-            foreach ($authors as $author) {
-                if (isset($_SESSION['usuario']) && $_SESSION['usuario'] === $author['RUT_autor']) {
-                    $isAuthor = true;
-                    break;
+                    echo "<p><strong>Autores:</strong><ul>";
+                    foreach ($authors as $author) {
+                        $contactMark = $author['is_contact'] ? " (autor de contacto)" : "";
+                        echo "<li>" . htmlspecialchars($author['nombre']) . " (" . htmlspecialchars($author['RUT_autor']) . ")$contactMark</li>";
+                    }
+                    echo "</ul></p>";
+
+                    // Editar
+                    foreach ($authors as $author) {
+                        if ($_SESSION['usuario'] === $author['RUT_autor']) {
+                            echo "<a class='edit-link' href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a>";
+                            break;
+                        }
+                    }
+
+                    echo "</div>";
                 }
             }
-            if ($isAuthor) {
-                echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
-            }
-            
 
-            echo "</div>";
-            
+        } catch (PDOException $e) {
+            echo "<p class='no-articles'>Error al obtener los artículos: " . htmlspecialchars($e->getMessage()) . "</p>";
         }
-    }
-
-} catch (PDOException $e) {
-    echo "<p>Error al obtener los artículos: " . $e->getMessage() . "</p>";
-}
-?>
-
+        ?>
+    </div>
 </body>
 </html>

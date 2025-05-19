@@ -41,33 +41,47 @@ $articulos_disponibles = $conn->query("
     )
 ");
 ?>
+<link rel="stylesheet" href="src/styles/revisores/detalle.css">
 
-   <a href="?page=gestion_revisores">Ir a miembros de comite</a>
-<h2>Revisor: <?= htmlspecialchars($revisor['nombre']) ?> (<?= htmlspecialchars($rut) ?>)</h2>
+<div class="container">
+    <a href="?page=gestion_revisores" class="back-link">← Volver a miembros del comité</a>
 
-<p><strong>Especialidades (tópicos):</strong> <?= implode(', ', $topicos) ?: 'Ninguno' ?></p>
+    <h2>Revisor: <?= htmlspecialchars($revisor['nombre']) ?> <span class="rut">(<?= htmlspecialchars($rut) ?>)</span></h2>
 
-<h3>Artículos Asignados</h3>
-<ul>
-    <?php while ($a = $asignados_res->fetch_assoc()): ?>
-        <li>
-            <?= $a['ID_articulo'] ?> - <?= htmlspecialchars($a['titulo']) ?>
-            <form method="post" action="index.php?page=quitar_articulo_revisor" style="display:inline;">
-                <input type="hidden" name="rut" value="<?= $rut ?>">
-                <input type="hidden" name="id_articulo" value="<?= $a['ID_articulo'] ?>">
-                <button type="submit">Quitar</button>
-            </form>
-        </li>
-    <?php endwhile; ?>
-</ul>
+    <p><strong>Especialidades:</strong> <?= implode(', ', $topicos) ?: '<em>Ninguno</em>' ?></p>
 
-<h3>Asignar Nuevo Artículo</h3>
-<form method="post" action="index.php?page=asignar_articulo_revisor">
-    <input type="hidden" name="rut" value="<?= $rut ?>">
-    <select name="id_articulo" required>
-        <?php while ($row = $articulos_disponibles->fetch_assoc()): ?>
-            <option value="<?= $row['ID_articulo'] ?>"><?= $row['ID_articulo'] ?> - <?= htmlspecialchars($row['titulo']) ?></option>
-        <?php endwhile; ?>
-    </select>
-    <button type="submit">Asignar</button>
-</form>
+    <section class="section">
+        <h3>Artículos Asignados</h3>
+        <?php if ($asignados_res->num_rows > 0): ?>
+            <ul class="assigned-list">
+                <?php while ($a = $asignados_res->fetch_assoc()): ?>
+                    <li>
+                        <span><?= $a['ID_articulo'] ?> - <?= htmlspecialchars($a['titulo']) ?></span>
+                        <form method="post" action="index.php?page=quitar_articulo_revisor" class="inline-form">
+                            <input type="hidden" name="rut" value="<?= $rut ?>">
+                            <input type="hidden" name="id_articulo" value="<?= $a['ID_articulo'] ?>">
+                            <button type="submit" class="remove-btn">Quitar</button>
+                        </form>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        <?php else: ?>
+            <p class="empty">Este revisor no tiene artículos asignados.</p>
+        <?php endif; ?>
+    </section>
+
+    <section class="section">
+        <h3>Asignar Nuevo Artículo</h3>
+        <form method="post" action="index.php?page=asignar_articulo_revisor" class="assign-form">
+            <input type="hidden" name="rut" value="<?= $rut ?>">
+            <select name="id_articulo" required>
+                <?php while ($row = $articulos_disponibles->fetch_assoc()): ?>
+                    <option value="<?= $row['ID_articulo'] ?>">
+                        <?= $row['ID_articulo'] ?> - <?= htmlspecialchars($row['titulo']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+            <button type="submit">Asignar</button>
+        </form>
+    </section>
+</div>

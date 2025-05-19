@@ -53,6 +53,8 @@ if (count($topico_ids) > 0) {
     <div class="container">
         <h3>Asignar Revisor al Artículo #<?= $id_articulo ?></h3>
 
+        <a href="?page=asignar_artic_rev" class="back-link">Volver</a>  
+
         <?php if (!empty($topico_ids)): ?>
             <form method="post" action="index.php?page=procesar_asignar_revisor" class="assign-form">
                 <input type="hidden" name="id_articulo" value="<?= $id_articulo ?>">

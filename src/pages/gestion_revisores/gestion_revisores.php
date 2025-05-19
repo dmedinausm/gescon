@@ -25,7 +25,7 @@ $result = $conn->query($sql);
         <div class="header">
             <a href="?page=main" class="back-button">← Volver al menú</a>
             <h2>Lista de Revisores</h2>
-            <a href="?page=agregar_revisores" target="_blank" class="add-button">+ Añadir miembro</a>
+            <a href="?page=agregar_revisores"class="add-button">+ Añadir miembro</a>
         </div>
 
         <table>

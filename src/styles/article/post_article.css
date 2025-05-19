@@ -1,0 +1,94 @@
+ body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #004080;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        label {
+            display: block;
+            margin: 8px 0 4px;
+            font-weight: bold;
+        }
+
+        .checkbox-group label {
+            font-weight: normal;
+            display: block;
+            margin: 4px 0;
+        }
+
+        button {
+            background-color: #004080;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #003366;
+        }
+
+        .link-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #004080;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+
+        .link-button:hover {
+            background-color: #003366;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
