@@ -9,6 +9,34 @@
 <div class="container">
     <h1>Subir un nuevo artículo</h1>
     <p>Ingrese los detalles del artículo.</p>
+    <form action="?page=post_article" method="post">
+    <input type="text" name="titulo" placeholder="Título del artículo" required><br>
+    <textarea name="resumen" placeholder="Resumen del artículo" required></textarea><br>
+    
+    <label>Seleccione uno o más tópicos:</label><br>
+    <?php
+    $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
+    $stmt = $pdo->query("SELECT ID_topico, nombre_topico FROM topico");
+    while ($row = $stmt->fetch()) {
+        echo "<label><input type='checkbox' name='topicos[]' value='{$row['ID_topico']}'> {$row['nombre_topico']}</label><br>";
+    }
+    ?>
+    <br>
+
+    <p>Ingrese hasta 3 autores (el primero será el autor de contacto):</p>
+    <?php for ($i = 0; $i < 3; $i++): ?>
+    <input type="text" name="autor_nombres[]" placeholder="Nombre del autor <?= $i + 1 ?>" <?= $i == 0 ? 'required' : '' ?>><br>
+    <input type="email" name="autor_emails[]" placeholder="Email del autor <?= $i + 1 ?>" <?= $i == 0 ? 'required' : '' ?>><br><br>
+    <?php endfor; ?>
+
+    <button type="submit">Subir artículo</button>
+
+    <br>
+    <a href="?page=main">Ir al menu</a>
+</form>
+
+</body>
+</html>
 
     <?php
     session_start();
