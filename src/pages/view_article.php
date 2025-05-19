@@ -99,7 +99,7 @@
                 // Allow editing only if either:
                 // - No reviewers are assigned, or
                 // - At least one review already exists
-                if (!$hasReviewers || $reviewCount > 0) {
+                if (!$hasReviewers && $reviewCount == 0) {
                     echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
                 }
             
