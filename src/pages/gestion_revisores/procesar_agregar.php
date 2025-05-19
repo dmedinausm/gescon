@@ -6,4 +6,5 @@ if (!empty($_POST['ruts'])) {
         $conn->query("REPLACE INTO mensaje_revisor (RUT_usuario, mostrar_mensaje) VALUES ('$rut', 1)");
     }
 }
-header("Location: ?page=agregar_revisores");
+header("Location: ?page=agregar_revisores&mensaje=ok");
+exit;

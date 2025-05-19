@@ -85,6 +85,8 @@ switch($page) {
   case 'perfil':
     include 'src/pages/perfil/perfil.php';
     break;
+  case 'logout':
+    include 'src/pages/logout.php';
   default:
     echo "<h1>404 - Página no encontrada</h1>";
     break;
