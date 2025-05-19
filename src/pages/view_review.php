@@ -66,6 +66,8 @@ if (!$reviews) {
     }
 }
 
-echo "<p><a href='?page=review_list&id={$article_id}'>Volver a la lista de evaluaciones</a></p>";
+    echo "<p><a href='?page=review_list&id={$article_id}'>Volver a la lista de evaluaciones</a></p>";
+
+
 
 ?>

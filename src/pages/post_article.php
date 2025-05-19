@@ -13,39 +13,40 @@
     <?php
     session_start();
     $pdo = new PDO("mysql:host=localhost; dbname=gescon", "root", "");
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        try {
+        $titulo = trim($_POST['titulo']);
+        $resumen = trim($_POST['resumen']);
+        $topico_ids = isset($_POST['topicos']) ? $_POST['topicos'] : [];
+        $autor_nombres = $_POST['autor_nombres'];
+        $autor_emails = $_POST['autor_emails'];
+        $autor_ruts = [];
 
-    try {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $titulo = trim($_POST['titulo']);
-            $resumen = trim($_POST['resumen']);
-            $topico_ids = isset($_POST['topicos']) ? $_POST['topicos'] : [];
-            $autor_nombres = $_POST['autor_nombres'];
-            $autor_emails = $_POST['autor_emails'];
-            $autor_ruts = [];
+        if (empty($topico_ids)) {
+            throw new Exception("Debe seleccionar al menos un tópico.");
+        }
 
-            if (empty($topico_ids)) {
-                throw new Exception("Debe seleccionar al menos un tópico.");
-            }
+        for ($i = 0; $i < count($autor_nombres); $i++) {
+            $nombre = trim($autor_nombres[$i]);
+            $email = trim($autor_emails[$i]);
 
-            for ($i = 0; $i < count($autor_nombres); $i++) {
-                $nombre = trim($autor_nombres[$i]);
-                $email = trim($autor_emails[$i]);
+            if ($nombre && $email) {
+                // Find RUT based on name and email
+                $stmt = $pdo->prepare("SELECT RUT_usuario FROM usuario WHERE nombre = ? AND email = ?");
+                $stmt->execute([$nombre, $email]);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($nombre && $email) {
-                    $stmt = $pdo->prepare("SELECT RUT_usuario FROM usuario WHERE nombre = ? AND email = ?");
-                    $stmt->execute([$nombre, $email]);
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($row) {
-                        $autor_ruts[] = $row['RUT_usuario'];
-                    } else {
-                        throw new Exception("Autor no encontrado: $nombre <$email>");
-                    }
+                if ($row) {
+                    $autor_ruts[] = $row['RUT_usuario'];
+                } else {
+                    throw new Exception("Autor no encontrado: $nombre <$email>");
                 }
             }
+        }
 
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $pdo->beginTransaction();
+    
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->beginTransaction();
 
             // Insert artículo
             $stmt = $pdo->prepare("INSERT INTO articulo (titulo, fecha_envio, resumen) VALUES (?, CURDATE(), ?)");
@@ -65,45 +66,16 @@
                 $stmt->execute([$articulo_id, $rut, $contact]);
             }
 
-            $pdo->commit();
-            echo "<p class='success'>Artículo registrado correctamente.</p>";
-        }
-    } catch (Exception $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        echo "<p class='error'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+        $pdo->commit();
+        echo "<p>Artículo registrado correctamente.</p>";
+
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        echo "<p>Error al registrar el artículo: " . $e->getMessage() . "</p>";
     }
-    ?>
-
-    <form action="?page=post_article" method="post">
-        <label for="titulo">Título del artículo:</label>
-        <input type="text" name="titulo" id="titulo" required>
-
-        <label for="resumen">Resumen del artículo:</label>
-        <textarea name="resumen" id="resumen" required></textarea>
-
-        <label>Seleccione uno o más tópicos:</label>
-        <div class="checkbox-group">
-            <?php
-            $stmt = $pdo->query("SELECT ID_topico, nombre_topico FROM topico");
-            while ($row = $stmt->fetch()) {
-                echo "<label><input type='checkbox' name='topicos[]' value='{$row['ID_topico']}'> " . htmlspecialchars($row['nombre_topico']) . "</label>";
-            }
-            ?>
-        </div>
-
-        <label>Ingrese hasta 3 autores (el primero será el autor de contacto):</label>
-        <?php for ($i = 0; $i < 3; $i++): ?>
-            <input type="text" name="autor_nombres[]" placeholder="Nombre del autor <?= $i + 1 ?>" <?= $i == 0 ? 'required' : '' ?>>
-            <input type="email" name="autor_emails[]" placeholder="Email del autor <?= $i + 1 ?>" <?= $i == 0 ? 'required' : '' ?>><br>
-        <?php endfor; ?>
-
-        <button type="submit">Subir artículo</button>
-    </form>
-
-    <a class="link-button" href="?page=view_article">Volver a la lista de artículos</a>
-    <a class="link-button" href="?page=main">Ir al menú</a>
-</div>
-</body>
-</html>
+    catch (Exception $e) {
+        echo "<p style='color:red;'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+    }
+}
+?>
+<p><a href="?page=view_article">Volver a la lista de artículos</a></p>

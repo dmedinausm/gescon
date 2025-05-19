@@ -78,12 +78,23 @@ try {
             }
             echo "</ul></p>";
 
+            // Check if a review already exists for this article by this reviewer
+            $stmtReviewCheck = $pdo->prepare("
+                SELECT ra.ID_revision
+                FROM revision_articulo ra
+                JOIN evaluacion e ON ra.ID_revision = e.ID_revision
+                JOIN articulo_revisor ar ON ra.ID_articulo = ar.ID_articulo
+                WHERE ra.ID_articulo = ? AND ar.RUT_revisor = ?
+                LIMIT 1
+            ");
+            $stmtReviewCheck->execute([$article['ID_articulo'], $_SESSION['usuario']]);
+            $review = $stmtReviewCheck->fetch(PDO::FETCH_ASSOC);
 
-
-            echo "<p><a href='?page=add_review&id={$article['ID_articulo']}'>A revisar</a></p>";
-
-            
-
+            if ($review) {
+                echo "<p><a href='?page=view_review_r&id={$review['ID_revision']}&articulo={$article['ID_articulo']}'>Ver evaluación enviada</a></p>";
+            } else {
+                echo "<p><a href='?page=add_review&id={$article['ID_articulo']}'>A revisar</a></p>";
+            }
             echo "</div>";
             
         }

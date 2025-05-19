@@ -78,22 +78,46 @@
                     }
                     echo "</ul></p>";
 
-                    // Editar
-                    foreach ($authors as $author) {
-                        if ($_SESSION['usuario'] === $author['RUT_autor']) {
-                            echo "<a class='edit-link' href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a>";
-                            break;
-                        }
-                    }
-
-                    echo "</div>";
+            $isAuthor = false;
+            foreach ($authors as $author) {
+                if (isset($_SESSION['usuario']) && $_SESSION['usuario'] === $author['RUT_autor']) {
+                    $isAuthor = true;
+                    break;
+                }
+            }
+            if ($isAuthor) {
+                // Check if any reviewers are assigned to this article
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM articulo_revisor WHERE ID_articulo = ?");
+                $stmt->execute([$article['ID_articulo']]);
+                $hasReviewers = $stmt->fetchColumn() > 0;
+            
+                // Check if any reviews exist for this article
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM revision_articulo WHERE ID_articulo = ?");
+                $stmt->execute([$article['ID_articulo']]);
+                $reviewCount = $stmt->fetchColumn();
+            
+                // Allow editing only if either:
+                // - No reviewers are assigned, or
+                // - At least one review already exists
+                if (!$hasReviewers || $reviewCount > 0) {
+                    echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
+                }
+            
+                // Show link to reviews if any exist
+                if ($reviewCount > 0) {
+                    echo "<p><a href='?page=review_list&id={$article['ID_articulo']}'>Ver revisiones del artículo</a></p>";
                 }
             }
 
-        } catch (PDOException $e) {
-            echo "<p class='no-articles'>Error al obtener los artículos: " . htmlspecialchars($e->getMessage()) . "</p>";
+            echo "</div>";
+            
         }
-        ?>
-    </div>
+    }
+
+} catch (PDOException $e) {
+    echo "<p>Error al obtener los artículos: " . $e->getMessage() . "</p>";
+}
+?>
+
 </body>
 </html>
