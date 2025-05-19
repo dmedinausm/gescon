@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->prepare("DELETE FROM articulo WHERE ID_articulo = ?")->execute([$article_id]);
 
             $pdo->commit();
-            echo "<p>Artículo eliminado correctamente.</p><a href='?page=view_articles'>Volver</a>";
+            header("Location: ?page=view_article");
             exit;
         } catch (PDOException $e) {
             $pdo->rollBack();
