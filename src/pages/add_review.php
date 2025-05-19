@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->commit();
 
-        echo "<p>Evaluación registrada exitosamente.</p><a href='?page=view_reviews'>Ver mis evaluaciones</a>";
+        echo "<p>Evaluación registrada exitosamente.</p><a href='?page=review_article'>Ver mis evaluaciones</a>";
         exit;
 
     } catch (PDOException $e) {

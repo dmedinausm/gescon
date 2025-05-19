@@ -86,20 +86,28 @@ try {
                 }
             }
             if ($isAuthor) {
-                echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
+                // Check if any reviewers are assigned to this article
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM articulo_revisor WHERE ID_articulo = ?");
+                $stmt->execute([$article['ID_articulo']]);
+                $hasReviewers = $stmt->fetchColumn() > 0;
             
-                // Check if there are any reviews for this article
-                $stmt = $pdo->prepare("
-                    SELECT COUNT(*) FROM revision_articulo
-                    WHERE ID_articulo = ?
-                ");
+                // Check if any reviews exist for this article
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM revision_articulo WHERE ID_articulo = ?");
                 $stmt->execute([$article['ID_articulo']]);
                 $reviewCount = $stmt->fetchColumn();
             
+                // Allow editing only if either:
+                // - No reviewers are assigned, or
+                // - At least one review already exists
+                if (!$hasReviewers || $reviewCount > 0) {
+                    echo "<p><a href='?page=edit_article&id={$article['ID_articulo']}'>Editar o eliminar artículo</a></p>";
+                }
+            
+                // Show link to reviews if any exist
                 if ($reviewCount > 0) {
                     echo "<p><a href='?page=review_list&id={$article['ID_articulo']}'>Ver revisiones del artículo</a></p>";
                 }
-            }            
+            }
 
             echo "</div>";
             

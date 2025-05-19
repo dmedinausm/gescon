@@ -32,7 +32,10 @@ switch($page) {
     break;   
   case 'view_review':
     include 'src/pages/view_review.php';
-    break;               
+    break;  
+  case 'view_review_r':
+    include 'src/pages/view_review_r.php';
+    break;                        
   case 'review_list':
     include 'src/pages/review_list.php';
     break;     
